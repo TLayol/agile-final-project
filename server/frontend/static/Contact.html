@@ -1,62 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Contact Us - Cars Dealership</title>
-    <style>
-        .contact-header {
-            background: url('https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200') no-repeat center center;
-            background-size: cover;
-            height: 300px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 2px 2px 4px #000;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Cars Dealership</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/static/About.html">About Us</a>
-                </li>
-                <!-- Task requirement: Active on Contact Us -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Contact Us <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
+import React, { useState } from "react";
+import "./Register.css";
+import Header from "../Header/Header";
+
+const Register = () => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const register = async (e) => {
+    e.preventDefault();
+    let register_url = window.location.origin + "/djangoapp/register";
+    
+    const res = await fetch(register_url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "userName": userName,
+        "password": password,
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+      }),
+    });
+
+    const json = await res.json();
+    if (json.status) {
+      sessionStorage.setItem('username', json.userName);
+      window.location.pathname = "/";
+    } else if (json.error === "Already Registered") {
+      alert("The user with same username is already registered");
+      window.location.pathname = "/";
+    }
+  };
+
+  return (
+    <div>
+      <Header />
+      <div className="register_container">
+        <div className="header">
+          <span className="text">Sign Up</span>
+          <div className="underline"></div>
         </div>
-    </nav>
-
-    <div class="contact-header">
-        <h1>Get in Touch</h1>
-    </div>
-
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Contact Details</h2>
-                <hr>
-                <p><strong>Address:</strong> 123 Car Avenue, Auto City, NY 10001, USA</p>
-                <p><strong>Phone:</strong> +1 (800) 123-4567</p>
-                <p><strong>Email:</strong> contact@carsdealership.com</p>
-                <p><strong>Business Hours:</strong> Mon - Sat: 9:00 AM - 8:00 PM</p>
+        <form onSubmit={register}>
+          <div className="inputs">
+            <div className="input">
+              <input type="text" placeholder="Username" className="input_field" onChange={(e) => setUserName(e.target.value)} required/>
             </div>
-            <div class="col-md-6">
-                <img src="https://images.unsplash.com/photo-1516733725897-1aa73b87c8e8?w=500" class="img-fluid rounded shadow" alt="Our Location">
+            <div className="input">
+              <input type="text" placeholder="First Name" className="input_field" onChange={(e) => setFirstName(e.target.value)} required/>
             </div>
-        </div>
+            <div className="input">
+              <input type="text" placeholder="Last Name" className="input_field" onChange={(e) => setLastName(e.target.value)} required/>
+            </div>
+            <div className="input">
+              <input type="email" placeholder="Email" className="input_field" onChange={(e) => setEmail(e.target.value)} required/>
+            </div>
+            <div className="input">
+              <input type="password" placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)} required/>
+            </div>
+          </div>
+          <div className="submit_container">
+            <button type="submit" className="submit">Register</button>
+          </div>
+        </form>
+      </div>
     </div>
+  );
+};
 
-    <footer class="text-center py-3 bg-light">
-        <p>&copy; 2026 Cars Dealership National Retailer</p>
-    </footer>
-</body>
-</html>
+export default Register;
