@@ -1,0 +1,4 @@
+curl -X GET http://localhost:8000/djangoapp/dealer/1
+
+Output:
+{"id": 1, "city": "Baltimore", "state": "Maryland", "st": "MD", "address": "123 Main St", "zip": "21201", "lat": 39.2904, "long": -76.6122, "short_name": "B-Dealership", "full_name": "Baltimore Car Dealership"}

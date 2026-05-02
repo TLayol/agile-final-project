@@ -1,0 +1,4 @@
+curl -X GET http://localhost:8000/djangoapp/get_reviews/1
+
+Output:
+[{"id": 1, "name": "Berkshire Hathway", "dealership": 1, "review": "Great service!", "purchase": true, "purchase_date": "02/16/2023", "car_make": "Toyota", "car_model": "Camry", "car_year": 2023, "sentiment": "positive"}]
